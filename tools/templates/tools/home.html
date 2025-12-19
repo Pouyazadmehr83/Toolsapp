@@ -1,0 +1,29 @@
+{% extends 'tools/base.html' %}
+
+{% block title %}ToolsApp | Home{% endblock %}
+
+{% block content %}
+<div class="row align-items-center">
+  <div class="col-md-7 mb-4 mb-md-0">
+    <h1 class="display-4 font-weight-bold">All your handy tools in one place.</h1>
+    <p class="lead text-muted">Start with our URL to QR converter and come back soon for more utilities.</p>
+    <a href="{% url 'tools:qr' %}" class="btn btn-primary btn-lg mt-3">Convert URL to QR</a>
+  </div>
+  <div class="col-md-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="card-title text-uppercase text-muted">Available Tools</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            URL → QR Code
+            <a href="{% url 'tools:qr' %}" class="btn btn-sm btn-outline-primary">Open</a>
+          </li>
+          <li class="list-group-item text-muted text-center">
+            More tools coming soon 🚀
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

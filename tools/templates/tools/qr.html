@@ -1,0 +1,50 @@
+{% extends 'tools/base.html' %}
+
+{% block title %}ToolsApp | URL to QR{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-6 mb-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h2 class="card-title">Convert URL to QR code</h2>
+        <p class="text-muted">Paste any URL, and we will generate a QR code you can share or download.</p>
+        {% if error_message %}
+          <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+          </div>
+        {% endif %}
+        <form method="post" class="mt-3">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="urlInput">URL</label>
+            <input type="url"
+                   class="form-control form-control-lg"
+                   id="urlInput"
+                   name="url"
+                   value="{{ url_value }}"
+                   placeholder="https://example.com"
+                   required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Generate QR</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 d-flex align-items-center justify-content-center">
+    {% if qr_image %}
+      <div class="text-center">
+        <p class="text-muted">Scan or download your QR code</p>
+        <img src="data:image/png;base64,{{ qr_image }}" alt="Generated QR code" class="img-fluid border rounded shadow-sm p-3 bg-white">
+        <div class="mt-3">
+          <a download="qr-code.png" href="data:image/png;base64,{{ qr_image }}" class="btn btn-outline-secondary btn-sm">Download PNG</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="text-center text-muted">
+        <p class="lead">Your QR code preview will appear here.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
