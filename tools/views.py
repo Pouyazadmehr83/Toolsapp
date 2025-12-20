@@ -78,3 +78,63 @@ def image_convert_view(request):
         "error_message": error_message,
     }
     return render(request, "tools/image_convert.html", context)
+
+
+def image_compress_view(request):
+    allowed_formats = {"jpeg", "webp", "png"}
+    compressed_image = None
+    target_format = "jpeg"
+    quality = 80
+    download_name = "compressed.jpg"
+    error_message = None
+
+    if request.method == "POST":
+        target_format = request.POST.get("target_format", "jpeg").lower()
+        image_file = request.FILES.get("image_file")
+        try:
+            quality = int(request.POST.get("quality", 80))
+        except (TypeError, ValueError):
+            quality = 80
+
+        quality = max(10, min(95, quality))
+
+        if target_format not in allowed_formats:
+            error_message = "Unsupported format requested."
+        elif not image_file:
+            error_message = "Please upload an image file."
+        else:
+            try:
+                image = Image.open(image_file)
+                if target_format == "jpeg" and image.mode in ("RGBA", "P"):
+                    image = image.convert("RGB")
+
+                buffer = io.BytesIO()
+                save_kwargs = {"format": target_format.upper()}
+
+                if target_format in {"jpeg", "webp"}:
+                    save_kwargs.update({"quality": quality, "optimize": True})
+                    if target_format == "webp":
+                        save_kwargs["method"] = 6
+                else:
+                    save_kwargs.update(
+                        {
+                            "optimize": True,
+                            "compress_level": max(0, min(9, int((100 - quality) / 10))),
+                        }
+                    )
+
+                image.save(buffer, **save_kwargs)
+                compressed_image = base64.b64encode(buffer.getvalue()).decode("ascii")
+                download_ext = "jpg" if target_format == "jpeg" else target_format
+                download_name = f"compressed.{download_ext}"
+            except Exception:
+                error_message = "Could not process the uploaded image. Please try another file."
+
+    context = {
+        "compressed_image": compressed_image,
+        "target_format": target_format,
+        "quality": quality,
+        "download_name": download_name,
+        "error_message": error_message,
+    }
+    return render(request, "tools/image_compress.html", context)

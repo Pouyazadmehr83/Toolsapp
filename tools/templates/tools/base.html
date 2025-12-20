@@ -25,6 +25,9 @@
             <li class="nav-item {% if request.resolver_match.url_name == 'image_convert' %}active{% endif %}">
               <a class="nav-link" href="{% url 'tools:image_convert' %}">Image Converter</a>
             </li>
+            <li class="nav-item {% if request.resolver_match.url_name == 'image_compress' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'tools:image_compress' %}">Image Compressor</a>
+            </li>
           </ul>
         </div>
       </div>
