@@ -8,7 +8,7 @@
     <div class="card shadow-sm border-0">
       <div class="card-body">
         <h2 class="card-title">Compress an image</h2>
-        <p class="text-muted mb-3">compressed image</p>
+        <p class="text-muted mb-3">Reduce image size with minimal quality loss. Upload, pick format and quality, then download.</p>
         {% if error_message %}
           <div class="alert alert-danger" role="alert">
             {{ error_message }}
@@ -23,7 +23,7 @@
           <div class="form-group">
             <label for="compressFormatSelect">Output format</label>
             <select class="form-control" id="compressFormatSelect" name="target_format" required>
-              <option value="jpeg" {% if target_format == 'jpeg' %}selected{% endif %}>JPEG (best format for compressed)</option>
+              <option value="jpeg" {% if target_format == 'jpeg' %}selected{% endif %}>JPEG (smallest files)</option>
               <option value="webp" {% if target_format == 'webp' %}selected{% endif %}>WEBP</option>
               <option value="png" {% if target_format == 'png' %}selected{% endif %}>PNG</option>
             </select>
@@ -31,7 +31,7 @@
           <div class="form-group">
             <label for="qualityRange">Quality (10-95)</label>
             <input type="range" class="custom-range" id="qualityRange" name="quality" min="10" max="95" step="1" value="{{ quality|default:'80' }}">
-            <small class="text-muted">Less quantity = less volume (Less quantity)</small>
+            <small class="text-muted">Lower quality = smaller file size.</small>
           </div>
           <button type="submit" class="btn btn-primary btn-lg btn-block">Compress</button>
         </form>
