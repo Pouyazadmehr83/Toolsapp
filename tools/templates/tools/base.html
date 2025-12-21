@@ -28,6 +28,15 @@
             <li class="nav-item {% if request.resolver_match.url_name == 'image_compress' %}active{% endif %}">
               <a class="nav-link" href="{% url 'tools:image_compress' %}">Image Compressor</a>
             </li>
+            <li class="nav-item {% if request.resolver_match.url_name == 'image_resize' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'tools:image_resize' %}">Resize / Crop</a>
+            </li>
+            <li class="nav-item {% if request.resolver_match.url_name == 'image_watermark' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'tools:image_watermark' %}">Watermark</a>
+            </li>
+            <li class="nav-item {% if request.resolver_match.url_name == 'image_filters' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'tools:image_filters' %}">Filters</a>
+            </li>
           </ul>
         </div>
       </div>
