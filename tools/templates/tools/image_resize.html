@@ -1,0 +1,69 @@
+{% extends 'tools/base.html' %}
+
+{% block title %}ToolsApp | Resize / Crop{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-6 mb-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h2 class="card-title">Resize or crop an image</h2>
+        <p class="text-muted mb-3">Set a target size, choose resize or center-crop, pick an output format, and download.</p>
+        {% if error_message %}
+          <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+          </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="resizeImageInput">Image file</label>
+            <input type="file" class="form-control-file" id="resizeImageInput" name="image_file" accept="image/*" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="widthInput">Width (px)</label>
+              <input type="number" class="form-control" id="widthInput" name="width" min="1" value="{{ width|default:'' }}" required>
+            </div>
+            <div class="form-group col">
+              <label for="heightInput">Height (px)</label>
+              <input type="number" class="form-control" id="heightInput" name="height" min="1" value="{{ height|default:'' }}" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="modeSelect">Mode</label>
+            <select class="form-control" id="modeSelect" name="mode">
+              <option value="resize" {% if mode == 'resize' %}selected{% endif %}>Resize (stretch to fit)</option>
+              <option value="crop" {% if mode == 'crop' %}selected{% endif %}>Center crop to size</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="resizeFormatSelect">Output format</label>
+            <select class="form-control" id="resizeFormatSelect" name="target_format" required>
+              <option value="png" {% if target_format == 'png' %}selected{% endif %}>PNG</option>
+              <option value="jpeg" {% if target_format == 'jpeg' %}selected{% endif %}>JPEG</option>
+              <option value="webp" {% if target_format == 'webp' %}selected{% endif %}>WEBP</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Process</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 d-flex align-items-center justify-content-center">
+    {% if processed_image %}
+      <div class="text-center w-100">
+        <p class="text-muted">Preview and download your resized/cropped image</p>
+        <img src="data:image/{{ target_format }};base64,{{ processed_image }}" alt="Processed preview" class="img-fluid border rounded shadow-sm p-3 bg-white">
+        <div class="mt-3">
+          <a download="{{ download_name }}" href="data:image/{{ target_format }};base64,{{ processed_image }}" class="btn btn-outline-secondary btn-sm">Download {{ target_format|upper }}</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="text-center text-muted">
+        <p class="lead">Processed image will appear here.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
