@@ -368,3 +368,8 @@ def image_filters_view(request):
         "error_message": error_message,
     }
     return render(request, "tools/image_filters.html", context)
+
+
+
+def file_hash(request):
+    pass

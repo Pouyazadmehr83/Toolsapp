@@ -7,6 +7,7 @@ from .views import (
     image_resize_view,
     image_watermark_view,
     qr_view,
+    file_hash
 )
 
 app_name = "tools"
@@ -20,4 +21,5 @@ urlpatterns = [
     path("image-filters/", image_filters_view, name="image_filters"),
     path("image-resize/", image_resize_view, name="image_resize"),
     path("watermark/", image_watermark_view, name="image_watermark"),
+    path("hash/",file_hash,name="hash")
 ]
