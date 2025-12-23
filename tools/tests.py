@@ -32,3 +32,20 @@ class FileHashUtilTest(SimpleTestCase):
 
         with self.assertRaises(ValueError):
             calculate_file_hash(uploaded_file, "invalid_algo")
+
+    def test_empty_file_hash(self):
+        content = b""
+        uploaded_file = SimpleUploadedFile(
+            "empty.txt",
+            content,
+            content_type="text/plain"
+        )
+
+        result = calculate_file_hash(uploaded_file, "sha256")
+
+        self.assertEqual(
+            result,
+            "e3b0c44298fc1c149afbf4c8996fb924"
+            "27ae41e4649b934ca495991b7852b855"
+        )
+    
