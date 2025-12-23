@@ -22,3 +22,13 @@ class FileHashUtilTest(SimpleTestCase):
             result,
             "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
         )
+    def test_invalid_algorithm_raises_error(self):
+        content = b"hello"
+        uploaded_file = SimpleUploadedFile(
+            "test.txt",
+            content,
+            content_type="text/plain"
+        )
+
+        with self.assertRaises(ValueError):
+            calculate_file_hash(uploaded_file, "invalid_algo")
