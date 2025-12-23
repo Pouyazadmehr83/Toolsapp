@@ -116,3 +116,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+
+#view file hash size
+MAX_UPLOAD_FILE_SIZE = 5 * 1024 * 1024

@@ -4,7 +4,8 @@ import hashlib
 import qrcode
 from django.shortcuts import render
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
-
+from django.conf import settings
+from .utils.hash_utils import calculate_file_hash
 
 def home_view(request):
     return render(request, "tools/home.html")
@@ -371,7 +372,7 @@ def image_filters_view(request):
 
 
 
-def file_hash(request):
+'''def file_hash(request):
     
     context = {
         "hash_value": None,
@@ -409,6 +410,36 @@ def file_hash(request):
                 })
 
             except Exception as e:
+                context["error_message"] = str(e)
+
+    return render(request, "tools/file_hash.html", context)
+'''
+
+
+def file_hash_view(request):
+    context = {}
+
+    if request.method == "POST":
+        uploaded_file = request.FILES.get("file")
+        algorithm = request.POST.get("algorithm", "sha256")
+
+        if not uploaded_file:
+            context["error_message"] = "Please select a file."
+
+        elif uploaded_file.size > settings.MAX_UPLOAD_FILE_SIZE:
+            context["error_message"] = "File size is too large."
+
+        else:
+            try:
+                hash_value = calculate_file_hash(uploaded_file, algorithm)
+
+                context.update({
+                    "hash_value": hash_value,
+                    "algorithm": algorithm,
+                    "file_name": uploaded_file.name,
+                })
+
+            except ValueError as e:
                 context["error_message"] = str(e)
 
     return render(request, "tools/file_hash.html", context)
