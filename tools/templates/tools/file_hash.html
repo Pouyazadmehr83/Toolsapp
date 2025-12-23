@@ -65,6 +65,7 @@
 
           <p class="mb-1 text-muted">Hash value</p>
           <pre class="bg-light p-3 rounded">{{ hash_value }}</pre>
+        <button onclick="myFunction()">Copy text</button>
         </div>
       </div>
     {% else %}
@@ -72,4 +73,19 @@
     {% endif %}
   </div>
 </div>
+<script>
+  document.getElementById('fileHashInput').addEventListener('change', function() {
+    const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+    this.nextElementSibling.textContent = fileName;
+  });
+
+    function myFunction() {
+        const hashText = document.querySelector('pre').innerText;
+        navigator.clipboard.writeText(hashText).then(function() {
+        alert('Hash copied to clipboard!');
+        }, function(err) {
+        alert('Failed to copy text: ', err);
+        });
+    }   
+</script>
 {% endblock %}
