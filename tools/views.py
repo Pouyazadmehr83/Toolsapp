@@ -372,4 +372,43 @@ def image_filters_view(request):
 
 
 def file_hash(request):
-    return render(request, "tools/file_hash.html")
+    
+    context = {
+        "hash_value": None,
+        "algorithm": None,
+        "file_name": None,
+        "error_message": None,
+    }
+
+    if request.method == "POST":
+        uploaded_file = request.FILES.get("file")
+        algorithm = request.POST.get("algorithm", "sha256")
+
+        if not uploaded_file:
+            context["error_message"] = "Please select a file."
+        else:
+            try:
+                # انتخاب الگوریتم
+                if algorithm == "sha256":
+                    hasher = hashlib.sha256()
+                elif algorithm == "sha1":
+                    hasher = hashlib.sha1()
+                elif algorithm == "md5":
+                    hasher = hashlib.md5()
+                else:
+                    raise ValueError("Unsupported hash algorithm")
+
+                # خواندن فایل به صورت تکه‌ای (مهم برای فایل‌های بزرگ)
+                for chunk in uploaded_file.chunks():
+                    hasher.update(chunk)
+
+                context.update({
+                    "hash_value": hasher.hexdigest(),
+                    "algorithm": algorithm,
+                    "file_name": uploaded_file.name,
+                })
+
+            except Exception as e:
+                context["error_message"] = str(e)
+
+    return render(request, "tools/file_hash.html", context)
