@@ -1,0 +1,75 @@
+{% extends 'tools/base.html' %}
+
+{% block title %}ToolsApp | File Hash{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6 mb-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h2 class="card-title">File Hash Generator</h2>
+        <p class="text-muted mb-3">
+          Upload a file and get its SHA-256 hash.
+        </p>
+
+        {% if error_message %}
+          <div class="alert alert-danger">
+            {{ error_message }}
+          </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <!-- فایل ورودی -->
+          <div class="form-group">
+            <label for="fileHashInput">File</label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="fileHashInput"
+              name="file"
+              required>
+          </div>
+
+          <!-- الگوریتم هش -->
+          <div class="form-group">
+            <label for="hashAlgo">Hash algorithm</label>
+            <select class="form-control" id="hashAlgo" name="algorithm">
+              <option value="sha256" selected>SHA-256</option>
+              <option value="sha1">SHA-1</option>
+              <option value="md5">MD5</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block">
+            Calculate Hash
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- نتیجه -->
+  <div class="col-lg-6 d-flex align-items-center justify-content-center">
+    {% if hash_value %}
+      <div class="card w-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Result</h5>
+
+          <p class="mb-1 text-muted">Algorithm</p>
+          <p><strong>{{ algorithm|upper }}</strong></p>
+
+          <p class="mb-1 text-muted">File name</p>
+          <p><strong>{{ file_name }}</strong></p>
+
+          <p class="mb-1 text-muted">Hash value</p>
+          <pre class="bg-light p-3 rounded">{{ hash_value }}</pre>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-muted lead">Hash result will appear here.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

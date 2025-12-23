@@ -372,4 +372,4 @@ def image_filters_view(request):
 
 
 def file_hash(request):
-    pass
+    return render(request, "tools/file_hash.html")
