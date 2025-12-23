@@ -48,4 +48,18 @@ class FileHashUtilTest(SimpleTestCase):
             "e3b0c44298fc1c149afbf4c8996fb924"
             "27ae41e4649b934ca495991b7852b855"
         )
-    
+
+    def test_sha1_hash(self):
+        content = b"hello world"
+        uploaded_file = SimpleUploadedFile(
+            "test.txt",
+            content,
+            content_type="text/plain"
+        )
+
+        result = calculate_file_hash(uploaded_file, "sha1")
+
+        self.assertEqual(
+            result,
+            "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed"
+        )
