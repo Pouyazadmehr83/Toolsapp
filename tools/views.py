@@ -1,6 +1,6 @@
 import base64
 import io
-
+import hashlib
 import qrcode
 from django.shortcuts import render
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps

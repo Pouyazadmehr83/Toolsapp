@@ -37,6 +37,10 @@
             <li class="nav-item {% if request.resolver_match.url_name == 'image_filters' %}active{% endif %}">
               <a class="nav-link" href="{% url 'tools:image_filters' %}">Filters</a>
             </li>
+             </li>
+            <li class="nav-item {% if request.resolver_match.url_name == 'hash' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'tools:hash' %}">file hash</a>
+            </li>
           </ul>
         </div>
       </div>
